@@ -69,7 +69,7 @@ select {
 
 .content {
   width: 100%;
-  max-width: 1400px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 28px 36px 100px;
 }
@@ -110,29 +110,6 @@ select {
   font-size: 15px;
 }
 
-.view-switcher {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 18px;
-  flex-wrap: wrap;
-}
-
-.switch-btn {
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  color: #374151;
-  border-radius: 999px;
-  padding: 10px 16px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.switch-btn.active {
-  background: #2563eb;
-  color: #ffffff;
-  border-color: #2563eb;
-}
-
 .selector-block {
   margin-bottom: 20px;
 }
@@ -157,95 +134,6 @@ select {
 
 .selector:focus {
   border-color: #2563eb;
-}
-
-.timetable-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  border: 1px solid #d9d9d9;
-  border-radius: 16px;
-  background: #ffffff;
-}
-
-.timetable {
-  width: 100%;
-  min-width: 1050px;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-.timetable th,
-.timetable td {
-  border: 1px solid #e5e7eb;
-}
-
-.timetable th {
-  background: #fafafa;
-  text-align: center;
-  padding: 14px 8px;
-}
-
-.time-col {
-  width: 180px;
-  min-width: 180px;
-  text-align: center;
-  vertical-align: middle;
-  padding: 16px 8px;
-  font-size: 14px;
-  color: #374151;
-  font-weight: 600;
-  background: #fafafa;
-}
-
-.day-header {
-  display: block;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.day-date {
-  display: block;
-  margin-top: 4px;
-  font-size: 12px;
-  color: #6b7280;
-  font-weight: 500;
-}
-
-.slot-cell {
-  padding: 8px;
-  height: 110px;
-  vertical-align: top;
-  background: #ffffff;
-}
-
-.lesson-card {
-  width: 100%;
-  border-radius: 8px;
-  padding: 10px;
-  min-height: 84px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  box-shadow: none;
-}
-
-.lesson-subject {
-  font-weight: 800;
-  margin-bottom: 6px;
-  line-height: 1.2;
-}
-
-.lesson-meta {
-  font-size: 13px;
-  line-height: 1.35;
-}
-
-.desktop-schedule {
-  display: block;
-}
-
-.mobile-schedule {
-  display: none;
 }
 
 .day-switcher {
@@ -308,8 +196,29 @@ select {
   color: #6b7280;
 }
 
+.lesson-card {
+  width: 100%;
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 84px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
 .mobile-card {
   min-height: 88px;
+}
+
+.lesson-subject {
+  font-weight: 800;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.lesson-meta {
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .bottom-nav {
@@ -342,32 +251,6 @@ select {
   font-weight: 700;
 }
 
-.desktop-only {
-  display: inline-flex;
-}
-
-@media (max-width: 900px) {
-  .content {
-    padding: 18px 14px 88px;
-  }
-
-  .view-title {
-    font-size: 22px;
-  }
-
-  .desktop-schedule {
-    display: none;
-  }
-
-  .mobile-schedule {
-    display: block;
-  }
-
-  .desktop-only {
-    display: none;
-  }
-}
-
 @media (max-width: 640px) {
   .topbar {
     height: 56px;
@@ -380,6 +263,10 @@ select {
 
   .calendar-icon {
     font-size: 18px;
+  }
+
+  .content {
+    padding: 18px 14px 88px;
   }
 
   .view-header-left {
@@ -401,11 +288,6 @@ select {
   .selector {
     height: 44px;
     font-size: 15px;
-  }
-
-  .switch-btn {
-    padding: 9px 14px;
-    font-size: 14px;
   }
 
   .day-switcher-center h2 {

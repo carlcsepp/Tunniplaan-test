@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useMemo, useState } from "react";
@@ -61,7 +62,7 @@ export default function Page() {
     <div className="page">
       <header className="topbar">
         <div className="topbar-left">
-          <span className="calendar-icon">📅</span>
+          <span className="calendar-icon">ikoon</span>
           <span>Tunniplaan</span>
         </div>
 
