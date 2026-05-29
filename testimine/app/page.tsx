@@ -31,12 +31,13 @@ type SavedPlan = {
   savedAt: string;
 };
 
+/* saaks lisada äkki date: (dayToday) vms, pole TEGELT vaja, sest nende tunniplaan ei muutu reaalajas, see on iga nädal sama */
 const days = [
-  { id: "1", name: "Esmaspäev", date: "31.03" },
-  { id: "2", name: "Teisipäev", date: "01.04" },
-  { id: "3", name: "Kolmapäev", date: "02.04" },
-  { id: "4", name: "Neljapäev", date: "03.04" },
-  { id: "5", name: "Reede", date: "04.04" },
+  { id: "1", name: "Esmaspäev"},
+  { id: "2", name: "Teisipäev"},
+  { id: "3", name: "Kolmapäev"},
+  { id: "4", name: "Neljapäev"},
+  { id: "5", name: "Reede"},
 ];
 
 const timeSlots = [
@@ -391,7 +392,6 @@ export default function Page() {
                   {days.map((day) => (
                     <th key={day.id}>
                       <span className="day-header">{day.name}</span>
-                      <span className="day-date">{day.date}</span>
                     </th>
                   ))}
                 </tr>
@@ -405,13 +405,12 @@ export default function Page() {
                       return (
                         <td key={`${day.id}-${slot}`} className="slot-cell">
                           {lesson ? (
-                            <div
-                              className="lesson-card"
-                              style={getSubjectStyles(lesson.aine)}
-                            >
+                            <div className="lesson-card" style={getSubjectStyles(lesson.aine)}>
                               <div className="lesson-subject">{lesson.aine}</div>
                               <div className="lesson-meta">{lesson.opetaja}</div>
-                              <div className="lesson-meta">Ruum: {lesson.ruum}</div>
+                              <div className="lesson-meta">
+                                Ruum: {lesson.ruum?.trim() ? lesson.ruum : "Pole saadaval, selgub jooksvalt"}
+                              </div>
                             </div>
                           ) : null}
                         </td>
@@ -429,7 +428,6 @@ export default function Page() {
             <button className="icon-button" onClick={goPreviousDay}>‹</button>
             <div className="day-switcher-center">
               <h2>{mobileDay.name}</h2>
-              <p>{mobileDay.date}</p>
             </div>
             <button className="icon-button" onClick={goNextDay}>›</button>
           </div>
