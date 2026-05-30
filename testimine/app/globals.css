@@ -67,6 +67,20 @@ select {
   color: #374151;
 }
 
+/* Save button */
+.save-button {
+  font-size: 26px;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.save-button:hover {
+  transform: scale(1.15);
+}
+
+.save-button.saved {
+  color: #1d72e1;
+}
+
 .content {
   width: 100%;
   max-width: 900px;
@@ -210,16 +224,113 @@ select {
   min-height: 88px;
 }
 
-.lesson-subject {
-  font-weight: 800;
-  margin-bottom: 6px;
-  line-height: 1.2;
+/* ── Saved plans ──────────────────────────────────── */
+
+.saved-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  gap: 10px;
 }
 
-.lesson-meta {
-  font-size: 13px;
-  line-height: 1.35;
+.saved-empty-icon {
+  font-size: 52px;
+  color: #d1d5db;
+  line-height: 1;
 }
+
+.saved-empty-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.saved-empty-sub {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+  max-width: 280px;
+}
+
+.saved-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.saved-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  transition: box-shadow 0.15s ease;
+}
+
+.saved-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.saved-card-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.saved-card-icon {
+  font-size: 22px;
+  color: #2563eb;
+  min-width: 28px;
+  text-align: center;
+}
+
+.saved-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.saved-card-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.saved-card-type {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.saved-card-remove {
+  padding: 16px 18px;
+  background: transparent;
+  border: none;
+  border-left: 1px solid #f3f4f6;
+  cursor: pointer;
+  font-size: 16px;
+  color: #9ca3af;
+  transition: color 0.1s ease;
+}
+
+.saved-card-remove:hover {
+  color: #e11d48;
+}
+
+/* ── Bottom nav ───────────────────────────────────── */
 
 .bottom-nav {
   position: sticky;
@@ -240,6 +351,10 @@ select {
   gap: 4px;
   color: #4b5563;
   font-size: 12px;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: color 0.15s ease;
 }
 
 .bottom-nav-item p {
