@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
@@ -59,15 +60,10 @@ function savedKey(type: ViewType, value: string) {
 export default function Page() {
   const events = timetable.events as ScheduleItem[];
   const classes = timetable.classes as string[];
-  const teachers = timetable.teachers as string[];
-  const rooms = timetable.rooms as string[];
-  const subjects = timetable.subjects as SubjectColor[];
 
   const [activeTab, setActiveTab] = useState<NavTab>("schedule");
   const [viewType, setViewType] = useState<ViewType>("class");
   const [selectedClass, setSelectedClass] = useState(classes[0] || "");
-  const [selectedTeacher, setSelectedTeacher] = useState(teachers[0] || "");
-  const [selectedRoom, setSelectedRoom] = useState(rooms[0] || "");
   const [mobileDayIndex, setMobileDayIndex] = useState(0);
   const [savedPlans, setSavedPlans] = useState<SavedPlan[]>([]);
 
@@ -162,8 +158,14 @@ export default function Page() {
 
   const mobileDay = days[mobileDayIndex];
 
+  const classLessons = useMemo(() => {
+    return events.filter((lesson) =>
+      lesson.klass.split(" ").includes(selectedClass)
+    );
+  }, [events, selectedClass]);
+
   const mobileLessons = useMemo(() => {
-    return filteredEvents
+    return classLessons
       .filter((lesson) => lesson.paev === mobileDay.id)
       .sort((a, b) => Number(a.tund) - Number(b.tund));
   }, [filteredEvents, mobileDay]);
@@ -307,8 +309,8 @@ export default function Page() {
               ‹
             </button>
             <div>
-              <h1 className="view-title">{getTitle()}</h1>
-              <p className="view-subtitle">Nädala tunniplaan</p>
+              <h1 className="view-title">Klassi tunniplaan</h1>
+              <p className="view-subtitle">Päeva tunniplaan</p>
             </div>
           </div>
 
@@ -444,7 +446,10 @@ export default function Page() {
                   </div>
                   <div
                     className="lesson-card mobile-card"
-                    style={getSubjectStyles(lesson.aine)}
+                    style={{
+                      backgroundColor: "#e5e7eb",
+                      color: "#111827",
+                    }}
                   >
                     <div className="lesson-subject">{lesson.aine}</div>
                     <div className="lesson-meta">{lesson.opetaja}</div>
