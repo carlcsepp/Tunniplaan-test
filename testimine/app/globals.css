@@ -8,12 +8,14 @@ html, body {
   font-family: Arial, sans-serif;
   background: #f3f4f6;
   color: #111827;
+  height: 100%;
 }
 
 body { min-height: 100vh; }
 a { color: inherit; text-decoration: none; }
 button, select { font: inherit; }
 
+/* The page fills the full viewport height and scrolls internally */
 .page {
   min-height: 100vh;
   background: #f3f4f6;
@@ -21,7 +23,7 @@ button, select { font: inherit; }
   flex-direction: column;
 }
 
-/* ── Topbar ─────────────────────────────────────────── */
+/* Top navigation bar */
 
 .topbar {
   height: 60px;
@@ -34,6 +36,7 @@ button, select { font: inherit; }
   position: sticky;
   top: 0;
   z-index: 20;
+  flex-shrink: 0;
 }
 
 .topbar-left {
@@ -56,16 +59,17 @@ button, select { font: inherit; }
   padding: 4px;
 }
 
-/* ── Content ────────────────────────────────────────── */
+/* Content — has bottom padding to clear the fixed nav bar */
 
 .content {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 28px 36px 100px;
+  flex: 1;
 }
 
-/* ── Home page ──────────────────────────────────────── */
+/* Home page */
 
 .home-content { max-width: 720px; }
 
@@ -223,7 +227,7 @@ button, select { font: inherit; }
   color: #2563eb;
 }
 
-/* ── Search overlay ─────────────────────────────────── */
+/* Search overlay */
 
 .search-overlay {
   position: fixed;
@@ -322,7 +326,7 @@ button, select { font: inherit; }
 .search-result-value { flex: 1; font-size: 15px; font-weight: 600; color: #111827; }
 .search-result-arrow { font-size: 20px; color: #9ca3af; }
 
-/* ── Schedule page ──────────────────────────────────── */
+/* Schedule page */
 
 .view-header {
   display: flex;
@@ -404,7 +408,7 @@ button, select { font: inherit; }
 .save-button:hover { transform: scale(1.15); }
 .save-button.saved { color: #1d78e1; }
 
-/* ── Timetable ───────────────────────────────────────── */
+/* Timetable */
 
 .timetable-wrapper {
   width: 100%;
@@ -454,7 +458,6 @@ button, select { font: inherit; }
   background: #ffffff;
 }
 
-/* Merged cells stretch the card to fill the full height */
 .merged-cell {
   padding: 8px;
   vertical-align: top;
@@ -482,7 +485,7 @@ button, select { font: inherit; }
 .desktop-schedule { display: block; }
 .mobile-schedule  { display: none; }
 
-/* ── Mobile ─────────────────────────────────────────── */
+/* Mobile day switcher */
 
 .day-switcher {
   display: flex;
@@ -528,7 +531,7 @@ button, select { font: inherit; }
 
 .mobile-card { min-height: 88px; }
 
-/* ── Saved page ─────────────────────────────────────── */
+/* Saved page */
 
 .saved-empty {
   display: flex;
@@ -589,29 +592,36 @@ button, select { font: inherit; }
 
 .saved-card-remove:hover { color: #e11d48; }
 
-/* ── Bottom nav ─────────────────────────────────────── */
+/* ── Bottom navigation — fixed to viewport bottom ── */
 
 .bottom-nav {
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  left: 0;
+  right: 0;
   background: #ffffff;
   border-top: 1px solid #e5e7eb;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  min-height: 68px;
-  z-index: 10;
+  height: 68px;
+  z-index: 30;
+  /* Safe area for notched phones */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .bottom-nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   color: #4b5563;
   font-size: 12px;
   cursor: pointer;
-  padding: 8px 16px;
+  /* Give each item an equal share of the nav width */
+  flex: 1;
+  padding: 8px 0;
   border-radius: 8px;
   transition: color 0.15s ease;
 }
@@ -619,10 +629,10 @@ button, select { font: inherit; }
 .bottom-nav-item p { margin: 0; }
 .bottom-nav-item.active { color: #2563eb; font-weight: 700; }
 
-/* ── Responsive ─────────────────────────────────────── */
+/* Responsive */
 
 @media (max-width: 900px) {
-  .content { padding: 18px 14px 88px; }
+  .content { padding: 18px 14px 96px; }
   .view-title { font-size: 22px; }
   .desktop-schedule { display: none; }
   .mobile-schedule { display: block; }

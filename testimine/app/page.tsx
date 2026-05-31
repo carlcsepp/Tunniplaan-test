@@ -38,13 +38,12 @@ type SearchResult = {
   sublabel: string;
 };
  
-// Saaks lisada äkki nt date: (tänane päev), kuid pole vast vaja, sest tunniplaan on staatiline
 const days = [
-  { id: "1", name: "Esmaspäev"},
-  { id: "2", name: "Teisipäev"},
-  { id: "3", name: "Kolmapäev"},
-  { id: "4", name: "Neljapäev"},
-  { id: "5", name: "Reede",},
+  { id: "1", name: "Esmaspäev" },
+  { id: "2", name: "Teisipäev" },
+  { id: "3", name: "Kolmapäev" },
+  { id: "4", name: "Neljapäev" },
+  { id: "5", name: "Reede" },
 ];
  
 const timeSlots = [
@@ -238,9 +237,9 @@ export default function Page() {
   const timeStr = now.toLocaleTimeString("et-EE", { hour: "2-digit", minute: "2-digit" });
   const dayName = ESTONIAN_DAYS[now.getDay()];
   const dateStr = `${dayName}, ${now.getDate()}. ${ESTONIAN_MONTHS[now.getMonth()]}`;
- 
-  // SEARCH FUNCTION OVERLAY
-  const SearchOverlay = () => (
+
+  // ── Inline search overlay JSX (NOT a sub-component, to avoid remount bug) ──
+  const searchOverlayJSX = searchOpen ? (
     <div className="search-overlay" onClick={() => { setSearchOpen(false); setSearchQuery(""); }}>
       <div className="search-modal" onClick={(e) => e.stopPropagation()}>
         <div className="search-input-row">
@@ -272,16 +271,13 @@ export default function Page() {
         </div>
       </div>
     </div>
-  );
- 
+  ) : null;
+
   // CELLS MERGING IN TIMETABLE
   const MergedTimetable = () => {
-    // Build 2D grid: grid[slotIdx][dayIdx]
     const grid = timeSlots.map((slot) =>
       days.map((day) => getLessonForCell(day.id, slot))
     );
- 
-    // Track cells to skip due to rowSpan above
     const skip: boolean[][] = timeSlots.map(() => days.map(() => false));
  
     return (
@@ -302,14 +298,10 @@ export default function Page() {
               <td className="time-col">{slot}</td>
               {days.map((day, dayIdx) => {
                 if (skip[slotIdx][dayIdx]) return null;
- 
                 const lesson = grid[slotIdx][dayIdx];
- 
                 if (!lesson) {
                   return <td key={`${day.id}-${slot}`} className="slot-cell" />;
                 }
- 
-                // Count consecutive rows with the same lessonId
                 let span = 1;
                 while (
                   slotIdx + span < timeSlots.length &&
@@ -318,17 +310,9 @@ export default function Page() {
                   skip[slotIdx + span][dayIdx] = true;
                   span++;
                 }
- 
                 return (
-                  <td
-                    key={`${day.id}-${slot}`}
-                    className="slot-cell merged-cell"
-                    rowSpan={span}
-                  >
-                    <div
-                      className="lesson-card"
-                      style={getSubjectStyles(lesson.aine)}
-                    >
+                  <td key={`${day.id}-${slot}`} className="slot-cell merged-cell" rowSpan={span}>
+                    <div className="lesson-card" style={getSubjectStyles(lesson.aine)}>
                       <div className="lesson-subject">{lesson.aine}</div>
                       <div className="lesson-meta">{lesson.opetaja}</div>
                       <div className="lesson-meta">Ruum: {lesson.ruum}</div>
@@ -343,11 +327,11 @@ export default function Page() {
     );
   };
  
-  // ── HOME PAGE ──────────────────────────────────────────────────────
+  // HOME PAGE
   if (activeTab === "home") {
     return (
       <div className="page">
-        {searchOpen && <SearchOverlay />}
+        {searchOverlayJSX}
         <header className="topbar">
           <div className="topbar-left">
             <span className="topbar-calendar-icon">(icon)</span>
@@ -380,7 +364,7 @@ export default function Page() {
                 <span className="home-nav-title">Klassi tunniplaan</span>
                 <span className="home-nav-sub">Vaata oma klassi tundide ajakava</span>
               </div>
-              <span className="home-nav-arrow"></span>
+              <span className="home-nav-arrow">›</span>
             </button>
  
             <button className="home-nav-card" onClick={() => { setViewType("teacher"); setActiveTab("schedule"); }}>
@@ -421,20 +405,20 @@ export default function Page() {
  
         <nav className="bottom-nav">
           <div className="bottom-nav-item active" onClick={() => setActiveTab("home")}><span>(icon)</span><p>Avaleht</p></div>
-          <div className="bottom-nav-item" onClick={() => setActiveTab("schedule")}><span>(icon)</span><p>Klass</p></div>
+          <div className="bottom-nav-item" onClick={() => setActiveTab("schedule")}><span>(icon)</span><p>Tunniplaan</p></div>
           <div className="bottom-nav-item" onClick={() => setActiveTab("saved")}>
-            <span>{savedPlans.length > 0 ? "(icon)" : "(icon)"}</span><p>Salvestatud</p>
+            <span>(icon)</span><p>Salvestatud</p>
           </div>
         </nav>
       </div>
     );
   }
  
-  // SAVED PAGE
+  // ── SAVED PAGE ─────────────────────────────────────────────────────
   if (activeTab === "saved") {
     return (
       <div className="page">
-        {searchOpen && <SearchOverlay />}
+        {searchOverlayJSX}
         <header className="topbar">
           <div className="topbar-left">
             <span className="topbar-calendar-icon">(icon)</span>
@@ -484,7 +468,7 @@ export default function Page() {
  
         <nav className="bottom-nav">
           <div className="bottom-nav-item" onClick={() => setActiveTab("home")}><span>(icon)</span><p>Avaleht</p></div>
-          <div className="bottom-nav-item" onClick={() => setActiveTab("schedule")}><span>(icon)</span><p>Klass</p></div>
+          <div className="bottom-nav-item" onClick={() => setActiveTab("schedule")}><span>(icon)</span><p>Tunniplaan</p></div>
           <div className="bottom-nav-item active"><span>(icon)</span><p>Salvestatud</p></div>
         </nav>
       </div>
@@ -494,7 +478,7 @@ export default function Page() {
   // SCHEDULE PAGE
   return (
     <div className="page">
-      {searchOpen && <SearchOverlay />}
+      {searchOverlayJSX}
       <header className="topbar">
         <div className="topbar-left">
           <span className="topbar-calendar-icon">(icon)</span>
@@ -559,7 +543,6 @@ export default function Page() {
             <button className="icon-button" onClick={goPreviousDay}>‹</button>
             <div className="day-switcher-center">
               <h2>{mobileDay.name}</h2>
-              <p>{mobileDay.date}</p>
             </div>
             <button className="icon-button" onClick={goNextDay}>›</button>
           </div>
@@ -589,10 +572,10 @@ export default function Page() {
         <div className="bottom-nav-item" onClick={() => setActiveTab("home")}><span>(icon)</span><p>Avaleht</p></div>
         <div className="bottom-nav-item active">
           <span>(icon)</span>
-          <p>{viewType === "class" ? "Klass" : viewType === "teacher" ? "Õpetaja" : "Ruum"}</p>
+          <p>{viewType === "class" ? "Tunniplaan" : viewType === "teacher" ? "Õpetaja" : "Ruum"}</p>
         </div>
         <div className="bottom-nav-item" onClick={() => setActiveTab("saved")}>
-          <span>{savedPlans.length > 0 ? "(icon)" : "(icon)"}</span>
+          <span>(icon)</span>
           <p>Salvestatud{savedPlans.length > 0 ? ` (${savedPlans.length})` : ""}</p>
         </div>
       </nav>
